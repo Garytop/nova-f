@@ -102,6 +102,7 @@ def embed_texts(
     batch_size: int,
     desc: str,
     normalize_vectors: bool = False,
+    text_prefix: str = "",
 ) -> np.ndarray:
     """批量生成文本向量。"""
     total = len(texts)
@@ -112,6 +113,8 @@ def embed_texts(
     for start in tqdm(range(0, total, batch_size), desc=desc):
         end = min(start + batch_size, total)
         chunk = texts[start:end]
+        if text_prefix:
+            chunk = [f"{text_prefix}{text}" for text in chunk]
         if not chunk:
             continue
         chunk_vecs = model.encode(
@@ -159,6 +162,7 @@ def main() -> None:
     parser.add_argument("--model-path", default="sentence-transformers/all-MiniLM-L6-v2", help="SentenceTransformer 模型路径或名称")
     parser.add_argument("--device", default=None, help="模型加载设备，如 cpu/cuda")
     parser.add_argument("--batch-size", type=int, default=32, help="编码批量大小")
+    parser.add_argument("--text-prefix", default="", help="训练文本编码前缀，例如 E5 使用 'passage: '")
     parser.add_argument("--overwrite", action="store_true", help="是否覆盖已有目录")
     parser.add_argument("--verbose", action="store_true", help="开启详细日志")
     args = parser.parse_args()
@@ -182,6 +186,7 @@ def main() -> None:
         payloads,
         batch_size=max(1, args.batch_size),
         desc="生成训练向量",
+        text_prefix=args.text_prefix,
     )
 
     npy_path = store_dir / "train_embeddings.npy"
@@ -198,6 +203,7 @@ def main() -> None:
         "payload_column": args.payload_column,
         "id_column": args.id_column,
         "embedding_model": args.model_path,
+        "train_text_prefix": args.text_prefix,
         "created_at": datetime.now(tz=UTC).isoformat(),
     }
     meta_path = store_dir / "meta.json"

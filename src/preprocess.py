@@ -87,12 +87,14 @@ def normalize_cve_labels(raw_value: str | Iterable[str]) -> List[str]:
     """解析并标准化CVE标签列表。"""
     if raw_value is None:
         return []
+    if isinstance(raw_value, float) and pd.isna(raw_value):
+        return []
 
     if isinstance(raw_value, list):
         labels = raw_value
     else:
         text = str(raw_value).strip()
-        if not text:
+        if not text or text.lower() in {"nan", "none", "null"}:
             return []
         try:
             parsed = ast.literal_eval(text)
@@ -107,7 +109,10 @@ def normalize_cve_labels(raw_value: str | Iterable[str]) -> List[str]:
     for label in labels:
         if not label:
             continue
-        normalized.append(str(label).strip().upper())
+        label_text = str(label).strip()
+        if not label_text or label_text.lower() in {"nan", "none", "null"}:
+            continue
+        normalized.append(label_text.upper())
     return sorted(set(normalized))
 
 

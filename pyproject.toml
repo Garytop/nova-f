@@ -1,19 +1,13 @@
 [project]
-name = "datacon2025"
+name = "nova-f"
 version = "0.1.0"
-description = "Add your description here"
+description = "Offline HTTP CVE traffic identification pipeline for DataCon 2025"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 dependencies = [
-    "numpy==1.26.4",
-    "pandas==2.2.3",
-    "tqdm==4.66.5",
-    "chromadb==0.5.5",
-
-    # ✅ use compatible versions
-    "langchain>=0.3.0,<0.4.0",
-    "langchain-community>=0.3.0,<0.4.0",
-    "langchain-openai>=0.2.0,<0.3.0",
-    "faiss-cpu==1.8.0",
-    "sentence-transformers==5.1.2",
+    "numpy>=1.26,<2.0",
+    "pandas>=2.2,<3.0",
+    "tqdm>=4.66,<5.0",
+    "faiss-cpu>=1.8",
+    "sentence-transformers>=5.1,<6.0",
 ]

@@ -7,12 +7,22 @@ __pycache__/
 
 # venv
 .venv/
+.venv-linux/
 
 # data files
 data/test_payload.csv
+data/train_payload.csv
 data/test_payload_cleaned.csv
 data/train_with_ultimate.csv
 data/train_with_ultimate_cleaned.csv
+data/external/
+data/experiments/
+data/datacon2025/
+data/*_converted.csv
+wp.pdf
+wp_extracted.txt
+ans/
+models/
 
 # embeddings
 embeddings/
